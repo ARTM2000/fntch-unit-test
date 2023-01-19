@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { BasicUserGuard } from 'src/common/guard/basic.guard';
 import { AuthorizedRequest, GlobalResponse } from 'src/common/types';
@@ -17,12 +17,24 @@ export class PostController {
     @Body() body: CreatePost,
   ): Promise<GlobalResponse<PostDocument>> {
     const user = req.user;
-    console.log('user >>', user);
-    
     const newPost = await this.postService.createPost(body, user);
 
     return {
+      message: 'New post created!',
       data: newPost,
+    };
+  }
+
+  @Get()
+  @UseGuards(BasicUserGuard)
+  async getUserPosts(
+    @Req() req: AuthorizedRequest,
+  ): Promise<GlobalResponse<PostDocument[]>> {
+    const user = req.user;
+    const posts = await this.postService.getUserPosts(user);
+
+    return {
+      data: posts,
     };
   }
 }
