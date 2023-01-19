@@ -1,4 +1,4 @@
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Users } from './user.entity';
@@ -28,5 +28,35 @@ export class UserService {
     });
 
     return this.userRepository.save(newUser);
+  }
+
+  async findUserWithEmail(email: string): Promise<Users | boolean> {
+    const user = await this.userRepository.findOne({ where: { email: email } });
+    if (!user) {
+      return false;
+    }
+    return user;
+  }
+
+  async verifyUser(email: string, password: string): Promise<void> {
+    const user = await this.findUserWithEmail(email);
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+    const isPasswordValid = bcrypt.compareSync(
+      password,
+      (user as Users).hash_password,
+    );
+    if (!isPasswordValid) {
+      throw new UnauthorizedException();
+    }
+    console.log('user cred was valid >>', email);
+  }
+
+  async dangerouslyCreateUserCredential(data: {
+    email: string;
+    password: string;
+  }): Promise<string> {
+    return Buffer.from(`${data.email}:${data.password}`).toString('base64');
   }
 }

@@ -21,6 +21,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     console.log(serviceResponse);
 
     return response.status(status).json({
+      error: true,
       message:
         serviceResponse && typeof serviceResponse === 'string'
           ? serviceResponse
