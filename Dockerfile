@@ -16,5 +16,5 @@ COPY . .
 # Creates a "dist" folder with the production build
 RUN npm run build
 
-# Start the server using the production build
+# Start the server using the development build
 CMD [ "npm", "run", "start:dev" ]

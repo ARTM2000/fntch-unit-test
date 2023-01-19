@@ -4,12 +4,14 @@ import { Repository } from 'typeorm';
 import { Post } from './post.entity';
 import { Users } from '../user/user.entity';
 import { CreatePost } from './dto/create-post.dto';
+import { NotificationService } from 'src/notification/notification.service';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectRepository(Post)
     private readonly postRepository: Repository<Post>,
+    private readonly notificationService: NotificationService,
   ) {}
 
   async createPost(data: CreatePost, user: Users): Promise<Post> {
@@ -19,7 +21,9 @@ export class PostService {
       user: user,
     });
 
-    return await this.postRepository.save(newPost);
+    const savedPost = await this.postRepository.save(newPost);
+    this.notificationService.sendEmailForNewPost(user.email, data.title);
+    return savedPost;
   }
 
   async getUserPosts(user: Users): Promise<Post[]> {
@@ -27,8 +31,7 @@ export class PostService {
     return userPosts;
   }
 
-  async getSinglePost(postId: number,
-    user: Users): Promise<Post> {
+  async getSinglePost(postId: number, user: Users): Promise<Post> {
     let foundPost = await this.postRepository.findOne({
       where: { id: postId, user: user },
     });
@@ -42,7 +45,7 @@ export class PostService {
     data: { id: number; title: string; content: string },
     user: Users,
   ): Promise<Post> {
-    let foundPost = await this.getSinglePost(data.id, user)
+    let foundPost = await this.getSinglePost(data.id, user);
     foundPost = { ...foundPost, title: data.title, content: data.content };
     return this.postRepository.save(foundPost);
   }
@@ -50,5 +53,9 @@ export class PostService {
   async deletePost(postId: number, user: Users) {
     const foundPost = await this.getSinglePost(postId, user);
     await this.postRepository.delete(foundPost);
+    this.notificationService.sendEmailForDeletePost(
+      user.email,
+      (foundPost as Post).title,
+    );
   }
 }

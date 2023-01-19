@@ -2,6 +2,7 @@ version: '3.7'
 
 services:
   awesome_blog:
+    image: awesome-blog:latest
     build:
       context: .
       network: host
@@ -15,6 +16,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: blog
+      MAIL_SERVER_HOST: fakesmtp
+      MAIL_SERVER_PORT: 25
     ports:
       - 1234:3000
     networks: 
@@ -34,8 +37,18 @@ services:
     networks:
       fntch-unit-test:
 
+  fakesmtp:
+    image: hatamiarash7/fake-smtp:latest
+    expose:
+      - 25
+    volumes:
+      - fakesmtp:/output
+    networks:
+      fntch-unit-test:
+
 volumes:
   postgres:
+  fakesmtp:
 
 networks:
   fntch-unit-test:

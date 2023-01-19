@@ -8,12 +8,14 @@ import { Repository } from 'typeorm';
 import { Users } from './user.entity';
 import { Register } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
+import { NotificationService } from 'src/notification/notification.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(Users)
     private readonly userRepository: Repository<Users>,
+    private readonly notificationService: NotificationService,
   ) {}
 
   async createUser(data: Register): Promise<Users> {
@@ -61,6 +63,7 @@ export class UserService {
     email: string;
     password: string;
   }): Promise<string> {
+    this.notificationService.sendEmailForNewLogin(data.email);
     return Buffer.from(`${data.email}:${data.password}`).toString('base64');
   }
 
