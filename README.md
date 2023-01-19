@@ -31,14 +31,11 @@ $ npm ci
 ## Running the app
 
 ```bash
-# development
-$ npm run start
+# run project with docker compose
+docker-compose up
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+# run project with docker-compose with detach mode
+docker-compose up -d
 ```
 
 ## Test
