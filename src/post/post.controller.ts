@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -66,6 +67,21 @@ export class PostController {
     return {
       message: 'Post updated!',
       data: updatedPost,
+    };
+  }
+
+  @Delete(':post_id')
+  @UseGuards(BasicUserGuard)
+  async deleteSinglePost(
+    @Req() req: AuthorizedRequest,
+    @Param() param: UpdatePostParams,
+  ): Promise<GlobalResponse<{}>> {
+    const user = req.user;
+    await this.postService.deletePost(+param.post_id, user);
+
+    return {
+      message: 'Post deleted!',
+      data: {},
     };
   }
 }

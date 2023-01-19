@@ -18,8 +18,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
       error?: string;
     };
 
-    console.log(serviceResponse);
-
     return response.status(status).json({
       error: true,
       message:

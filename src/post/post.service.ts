@@ -27,17 +27,28 @@ export class PostService {
     return userPosts;
   }
 
-  async updateSinglePost(
-    data: { id: number; title: string; content: string },
-    user: Users,
-  ): Promise<Post> {
+  async getSinglePost(postId: number,
+    user: Users): Promise<Post> {
     let foundPost = await this.postRepository.findOne({
-      where: { id: data.id, user: user },
+      where: { id: postId, user: user },
     });
     if (!foundPost) {
       throw new NotFoundException('Post not found');
     }
+    return foundPost;
+  }
+
+  async updateSinglePost(
+    data: { id: number; title: string; content: string },
+    user: Users,
+  ): Promise<Post> {
+    let foundPost = await this.getSinglePost(data.id, user)
     foundPost = { ...foundPost, title: data.title, content: data.content };
     return this.postRepository.save(foundPost);
+  }
+
+  async deletePost(postId: number, user: Users) {
+    const foundPost = await this.getSinglePost(postId, user);
+    await this.postRepository.delete(foundPost);
   }
 }
