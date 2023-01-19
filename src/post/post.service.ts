@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Post } from './post.entity';
@@ -25,5 +25,19 @@ export class PostService {
   async getUserPosts(user: Users): Promise<Post[]> {
     const userPosts = await this.postRepository.find({ where: { user: user } });
     return userPosts;
+  }
+
+  async updateSinglePost(
+    data: { id: number; title: string; content: string },
+    user: Users,
+  ): Promise<Post> {
+    let foundPost = await this.postRepository.findOne({
+      where: { id: data.id, user: user },
+    });
+    if (!foundPost) {
+      throw new NotFoundException('Post not found');
+    }
+    foundPost = { ...foundPost, title: data.title, content: data.content };
+    return this.postRepository.save(foundPost);
   }
 }

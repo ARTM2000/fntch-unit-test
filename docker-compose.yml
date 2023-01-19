@@ -5,6 +5,7 @@ services:
     build:
       context: .
       network: host
+    restart: always
     volumes:
       - ./src:/usr/app/src # for watch mode in development
     environment:
@@ -23,6 +24,7 @@ services:
     image: postgres:14
     expose:
       - 5432
+    restart: always
     volumes:
       - postgres:/data/postgres
     environment:

@@ -1,8 +1,17 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
-import { Request } from 'express';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { BasicUserGuard } from 'src/common/guard/basic.guard';
 import { AuthorizedRequest, GlobalResponse } from 'src/common/types';
 import { CreatePost } from './dto/create-post.dto';
+import { UpdatePost, UpdatePostParams } from './dto/update-post.dto';
 import { Post as PostDocument } from './post.entity';
 import { PostService } from './post.service';
 
@@ -35,6 +44,28 @@ export class PostController {
 
     return {
       data: posts,
+    };
+  }
+
+  @Put(':post_id')
+  @UseGuards(BasicUserGuard)
+  async updateSinglePost(
+    @Req() req: AuthorizedRequest,
+    @Body() body: UpdatePost,
+    @Param() param: UpdatePostParams,
+  ): Promise<GlobalResponse<PostDocument>> {
+    const user = req.user;
+    const updatedPost = await this.postService.updateSinglePost(
+      {
+        id: +param.post_id,
+        ...body,
+      },
+      user,
+    );
+
+    return {
+      message: 'Post updated!',
+      data: updatedPost,
     };
   }
 }
