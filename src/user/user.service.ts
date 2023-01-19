@@ -59,4 +59,10 @@ export class UserService {
   }): Promise<string> {
     return Buffer.from(`${data.email}:${data.password}`).toString('base64');
   }
+
+  async dangerouslyVerifyCredential(credential: string): Promise<void> {
+    const decodeCred = Buffer.from(credential, 'base64').toString();
+    const [email, password] = decodeCred.split(':');
+    await this.verifyUser(email, password);
+  }
 }
