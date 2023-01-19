@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException, UnprocessableEntityException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Users } from './user.entity';
@@ -60,9 +64,10 @@ export class UserService {
     return Buffer.from(`${data.email}:${data.password}`).toString('base64');
   }
 
-  async dangerouslyVerifyCredential(credential: string): Promise<void> {
-    const decodeCred = Buffer.from(credential, 'base64').toString();
+  async dangerouslyVerifyCredential(credential: string): Promise<Users> {
+    const decodeCred = Buffer.from(credential, 'base64').toString('utf8');
     const [email, password] = decodeCred.split(':');
     await this.verifyUser(email, password);
+    return this.findUserWithEmail(email) as Promise<Users>;
   }
 }

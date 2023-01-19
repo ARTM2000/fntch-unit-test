@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { IGlobalRespnose } from '../common/types';
+import { GlobalResponse } from '../common/types';
 import { Register } from './dto/register.dto';
 import { Login } from './dto/login.dto';
 import { Users } from './user.entity';
@@ -10,7 +10,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  async register(@Body() body: Register): Promise<IGlobalRespnose<Users>> {
+  async register(@Body() body: Register): Promise<GlobalResponse<Users>> {
     const newUser = await this.userService.createUser(body);
     return {
       data: newUser,
@@ -18,7 +18,7 @@ export class UserController {
   }
 
   @Post('login')
-  async login(@Body() body: Login): Promise<IGlobalRespnose<string>> {
+  async login(@Body() body: Login): Promise<GlobalResponse<string>> {
     await this.userService.verifyUser(body.email, body.password);
     const cred = await this.userService.dangerouslyCreateUserCredential({
       email: body.email,
