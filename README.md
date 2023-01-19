@@ -5,7 +5,6 @@ This project create for educational purpose in order to share the knowledge abou
 The project take place in backend of a blog post website platform which has these concepts:
  -  User (who write post)
  -  Post
- -  Activity logs (activities are: _user register_, _user login_, _post creation_, _post update_, _post delete_)
 
 Features are:
  - User should be able to register with username, email and password
@@ -14,7 +13,6 @@ Features are:
  - Authorized user should be able to get list of his/her posts
  - Authorized user should be able to edit his/her post
  - Authorized user should be able to delete his/her post
- - Activity logs should be save to database by user information and user act
  - Authorized user should receive email for _new login_, _post creation_ and _post delete_ events
 
 ## Technical Requirements
