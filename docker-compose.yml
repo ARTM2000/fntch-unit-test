@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+  awesome_blog:
+    build:
+      context: .
+      network: host
+    volumes:
+      - ./src:/usr/app/src # for watch mode in development
+    environment:
+      NODE_ENV: development
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: blog
+    ports:
+      - 1234:3000
+    networks: 
+      fntch-unit-test:
+
+  postgres: 
+    image: postgres:14
+    expose:
+      - 5432
+    volumes:
+      - postgres:/data/postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: blog
+    networks:
+      fntch-unit-test:
+
+volumes:
+  postgres:
+
+networks:
+  fntch-unit-test:

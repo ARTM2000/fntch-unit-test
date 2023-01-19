@@ -15,6 +15,7 @@ Features are:
  - Authorized user should be able to edit his/her post
  - Authorized user should be able to delete his/her post
  - Activity logs should be save to database by user information and user act
+ - Authorized user should receive email for _new login_, _post creation_ and _post delete_ events
 
 ## Technical Requirements
  - nodejs (v16 or later)
@@ -24,7 +25,7 @@ Features are:
 ## Installation
 
 ```bash
-$ npm install
+$ npm ci
 ```
 
 ## Running the app
