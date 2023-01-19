@@ -24,7 +24,7 @@ services:
       fntch-unit-test:
 
   postgres: 
-    image: postgres:14
+    image: postgres:15
     expose:
       - 5432
     restart: always
