@@ -1,18 +1,20 @@
 import { Post } from 'src/post/post.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Exclude } from 'class-transformer';
 
-@Entity()
+@Entity('users')
 export class Users {
   @PrimaryGeneratedColumn()
   public id?: number;
 
-  @Column()
+  @Column({ nullable: false })
   public email: string;
 
-  @Column()
+  @Column({ nullable: false })
   public username: string;
 
-  @Column()
+  @Column({ nullable: false })
+  @Exclude({ toPlainOnly: true })
   public hash_password: string;
 
   @OneToMany(() => Post, (post) => post.user)

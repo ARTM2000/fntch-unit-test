@@ -1,7 +1,7 @@
 import { Users } from 'src/user/user.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity('post')
 export class Post {
   @PrimaryGeneratedColumn()
   public id?: number;
