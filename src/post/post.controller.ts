@@ -75,7 +75,7 @@ export class PostController {
   async deleteSinglePost(
     @Req() req: AuthorizedRequest,
     @Param() param: UpdatePostParams,
-  ): Promise<GlobalResponse<{}>> {
+  ): Promise<GlobalResponse<any>> {
     const user = req.user;
     await this.postService.deletePost(+param.post_id, user);
 

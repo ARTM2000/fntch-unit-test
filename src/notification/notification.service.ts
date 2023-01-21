@@ -56,7 +56,10 @@ export class NotificationService {
     });
   }
 
-  async sendEmailForDeletePost(email: string, postTitle: string): Promise<void> {
+  async sendEmailForDeletePost(
+    email: string,
+    postTitle: string,
+  ): Promise<void> {
     const subject = 'You Delete your post at awesome blog';
     const html = `
     <h1>You Delete your post at Awesome Blog</h1>

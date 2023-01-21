@@ -1,37 +1,31 @@
-import { Test } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { repositoryMockFactory } from '@app/common/test-utils/functions';
 import { MockType } from '@app/common/test-utils/types';
-import { NotificationModule } from '@app/notification/notification.module';
+import { UserService } from '@app/user/user.service';
+import { Test } from '@nestjs/testing';
+import { PostController } from '../post.controller';
+import { PostService } from '../post.service';
 import { NotificationService } from '@app/notification/notification.service';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Post } from '../post.entity';
+import { repositoryMockFactory } from '@app/common/test-utils/functions';
 import { Repository } from 'typeorm';
-import { Users } from '../user.entity';
-import { UserService } from '../user.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-// import { UserController } from '../user.controller';
 
-describe('User Service', () => {
-  let userService: UserService;
+describe('Post Controller', () => {
+  let postService: PostService;
   /**
    * Notice: `MockType` create types for user service with optional
    * methods as jest function
    */
   let userService_mock: MockType<UserService>;
   /**
-   * Notice: `MockType` create types for notification service with optional
+   * Notice: `MockType` create types for user service with optional
    * methods as jest function
    */
   let notificationService_mock: MockType<NotificationService>;
   /**
-   * Notice: `MockType` create types for user repository with optional
+   * Notice: `MockType` create types for post repository with optional
    * methods as jest function
    */
-  let userRepository_mock: MockType<Repository<Users>>;
-  /**
-   * Notice: `MockType` create types for **ConfigService** with optional
-   * methods as jest function
-   */
-  let configService_mock: MockType<ConfigService>;
+  let postRepository_mock: MockType<Repository<Post>>;
 
   beforeEach(async () => {
     /**
@@ -54,54 +48,38 @@ describe('User Service', () => {
      *
      * This variable should redefine in every test to prevent side-effects.
      */
-    userRepository_mock = repositoryMockFactory<Users>();
-    /**
-     * Notice: It's a best practice to only define required methods to
-     * increase code quality.
-     *
-     * This variable should redefine in every test to prevent side-effects.
-     */
-    configService_mock = {
-      get: jest.fn((key) => key),
-      getOrThrow: jest.fn((key) => key),
-    };
+    postRepository_mock = repositoryMockFactory<Post>();
 
-    const userModule = await Test.createTestingModule({
-      imports: [NotificationModule, ConfigModule],
+    const postModule = await Test.createTestingModule({
+      imports: [],
       providers: [
+        PostService,
         {
-          // <MODULE ITSELF> mocked!
+          // <EXTERNAL MODULE DEPENDENCY> mocked!
           provide: UserService,
           useValue: userService_mock,
         },
         {
-          // <REPOSITORY> mocked!
-          provide: getRepositoryToken(Users),
-          useValue: userRepository_mock,
-        },
-        {
-          // <EXTERNAL MODULES> mocked!
+          // <EXTERNAL MODULE DEPENDENCY> mocked!
           provide: NotificationService,
           useValue: notificationService_mock,
         },
         {
-          // <EXTERNAL MODULE DEPENDENCY> mocked!
-          provide: ConfigService,
-          useValue: configService_mock,
+          provide: getRepositoryToken(Post),
+          useValue: postRepository_mock,
         },
       ],
-      //   not required
-      //   controllers: [UserController],
+      controllers: [PostController],
     }).compile();
 
-    userService = userModule.get<UserService>(UserService);
+    postService = postModule.get<PostService>(PostService);
   });
 
   /**
    * <Test Suite>
-   * TEST `createUser`
+   * TEST `createPost`
    */
-  describe('createUser', () => {
+  describe('createPost', () => {
     /**
      * 1. Define test case
      * 2. Try to write test for all possible scenarios
@@ -114,9 +92,9 @@ describe('User Service', () => {
 
   /**
    * <Test Suite>
-   * TEST `findUserWithEmail`
+   * TEST `getUserPosts`
    */
-  describe('findUserWithEmail', () => {
+  describe('getUserPosts', () => {
     /**
      * 1. Define test case
      * 2. Try to write test for all possible scenarios
@@ -129,9 +107,9 @@ describe('User Service', () => {
 
   /**
    * <Test Suite>
-   * TEST `verifyUser`
+   * TEST `getSinglePost`
    */
-  describe('verifyUser', () => {
+  describe('getSinglePost', () => {
     /**
      * 1. Define test case
      * 2. Try to write test for all possible scenarios
@@ -144,9 +122,9 @@ describe('User Service', () => {
 
   /**
    * <Test Suite>
-   * TEST `dangerouslyCreateUserCredential`
+   * TEST `updateSinglePost`
    */
-  describe('dangerouslyCreateUserCredential', () => {
+  describe('updateSinglePost', () => {
     /**
      * 1. Define test case
      * 2. Try to write test for all possible scenarios
@@ -159,9 +137,9 @@ describe('User Service', () => {
 
   /**
    * <Test Suite>
-   * TEST `dangerouslyVerifyCredential`
+   * TEST `deletePost`
    */
-  describe('dangerouslyVerifyCredential', () => {
+  describe('deletePost', () => {
     /**
      * 1. Define test case
      * 2. Try to write test for all possible scenarios

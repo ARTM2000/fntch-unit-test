@@ -32,7 +32,7 @@ export class PostService {
   }
 
   async getSinglePost(postId: number, user: Users): Promise<Post> {
-    let foundPost = await this.postRepository.findOne({
+    const foundPost = await this.postRepository.findOne({
       where: { id: postId, user: user },
     });
     if (!foundPost) {

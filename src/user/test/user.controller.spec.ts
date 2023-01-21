@@ -1,9 +1,7 @@
 import { Test } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
 import { repositoryMockFactory } from '@app/common/test-utils/functions';
 import { MockType } from '@app/common/test-utils/types';
 import { NotificationModule } from '@app/notification/notification.module';
-import { NotificationService } from '@app/notification/notification.service';
 import { Repository } from 'typeorm';
 import { UserController } from '../user.controller';
 import { Users } from '../user.entity';
@@ -63,11 +61,6 @@ describe('User Controller', () => {
           useValue: userService_mock,
         },
         {
-          // <REPOSITORY> mocked!
-          provide: getRepositoryToken(Users),
-          useValue: userRepository_mock,
-        },
-        {
           // <EXTERNAL MODULE DEPENDENCY> mocked!
           provide: ConfigService,
           useValue: configService_mock,
@@ -89,7 +82,9 @@ describe('User Controller', () => {
      * 2. Try to write test for all possible scenarios
      * 3. Take care of best practices
      */
-    it('<SCENARIO>', async () => { /* test case here */ });
+    it('<SCENARIO>', async () => {
+      /* test case here */
+    });
   });
 
   /**
@@ -102,6 +97,8 @@ describe('User Controller', () => {
      * 2. Try to write test for all possible scenarios
      * 3. Take care of best practices
      */
-    it('<SCENARIO>', async () => { /* test case here */ });
+    it('<SCENARIO>', async () => {
+      /* test case here */
+    });
   });
 });
