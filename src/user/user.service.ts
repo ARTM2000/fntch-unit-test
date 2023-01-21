@@ -8,7 +8,7 @@ import { Repository } from 'typeorm';
 import { Users } from './user.entity';
 import { Register } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
-import { NotificationService } from 'src/notification/notification.service';
+import { NotificationService } from '@app/notification/notification.service';
 
 @Injectable()
 export class UserService {

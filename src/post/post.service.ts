@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { Post } from './post.entity';
 import { Users } from '../user/user.entity';
 import { CreatePost } from './dto/create-post.dto';
-import { NotificationService } from 'src/notification/notification.service';
+import { NotificationService } from '@app/notification/notification.service';
 
 @Injectable()
 export class PostService {

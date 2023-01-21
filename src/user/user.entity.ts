@@ -1,4 +1,4 @@
-import { Post } from 'src/post/post.entity';
+import { Post } from '@app/post/post.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
 

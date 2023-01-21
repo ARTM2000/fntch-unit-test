@@ -10,8 +10,8 @@ import { NotificationService } from './notification.service';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         transport: {
-          host: configService.getOrThrow('MAIL_SERVER_HOST'),
-          port: configService.getOrThrow('MAIL_SERVER_PORT'),
+          host: configService.get('MAIL_SERVER_HOST'),
+          port: configService.get('MAIL_SERVER_PORT'),
           tls: { rejectUnauthorized: false },
           secure: false,
         },

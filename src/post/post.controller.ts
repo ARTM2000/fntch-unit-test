@@ -9,8 +9,8 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { BasicUserGuard } from 'src/common/guard/basic.guard';
-import { AuthorizedRequest, GlobalResponse } from 'src/common/types';
+import { BasicUserGuard } from '@app/common/guard/basic.guard';
+import { AuthorizedRequest, GlobalResponse } from '@app/common/types';
 import { CreatePost } from './dto/create-post.dto';
 import { UpdatePost, UpdatePostParams } from './dto/update-post.dto';
 import { Post as PostDocument } from './post.entity';
