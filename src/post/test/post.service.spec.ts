@@ -9,7 +9,7 @@ import { Post } from '../post.entity';
 import { repositoryMockFactory } from '@app/common/test-utils/functions';
 import { Repository } from 'typeorm';
 
-describe('Post Controller', () => {
+describe('Post Service', () => {
   let postService: PostService;
   /**
    * Notice: `MockType` create types for user service with optional
